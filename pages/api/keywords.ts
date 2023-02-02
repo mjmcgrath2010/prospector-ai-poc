@@ -15,7 +15,13 @@ export default async function handler(req: NextApiRequest, res: any) {
   try {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
-    const body = $("p").text();
+    const el = $("h1, h2, h3, h4, h5, h6, p, a, button");
+    const body = el
+      .map((_i: any, el: any) =>
+        typeof $(el).text() === "string" ? $(el).text() : ""
+      )
+      .get()
+      .join("\n\n");
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `Extract keywords from this text:\n\n${body}`,
