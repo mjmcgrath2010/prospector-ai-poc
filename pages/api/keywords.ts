@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: any) {
   try {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
-    const el = $("h1, h2, h3, h4, h5, h6, p, span");
+    const el = $("h1, h2, h3, h4, h5, h6, p");
     const body = el
       .map((_i: any, el: any) =>
         typeof $(el).text() === "string" ? $(el).text() : ""
